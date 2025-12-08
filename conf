@@ -1,0 +1,20 @@
+
+ip:
+	port: 42432567890
+	error:
+		404: /path
+		403: /
+	max_body_size: 1096
+	methods:
+		GET
+		POST
+	redir:
+		/a/b: /c/d
+	listing: TrUe
+	default: "/aaaaaaaaa"
+	cgi:
+		.py: "/bin/python3"
+		.php: "/bin/php"
+	
+ip2:
+	port: 746789780
