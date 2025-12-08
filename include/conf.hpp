@@ -3,37 +3,27 @@
 
 #include <iostream>
 #include <map>
+#include <vector>
 #include <string>
 
-#define TYPE_STR 0
-#define TYPE_INT 1
-#define TYPE_MAP 2
-
-class ConfValue {
-	private:
-		int type;
-		union {
-			std::string *str;
-			int i;
-			std::map<std::string, ConfValue> *map;
-		} val;
-
+class Interface {
 	public:
-		ConfValue();
-		~ConfValue();
-		int checktype(int type);
+		std::string host;
+		int port;
 
-		// returns 1 if already present
-		int set_str(std::string str);
-		int set_int(int i);
+		std::map<int, std::string> errors;
+		int max_body_size;
 
-		int set_map_str(std::string key, std::string str);
-		int set_map_int(std::string key, int i);
-		int set_map_map(std::string key, ConfValue *map);
+		std::vector<std::string> methods;
 
-		std::string get_str(std::string key);
-		int get_int(std::string key);
-		std::map<std::string, ConfValue> *get_map();
+		std::string root;
+		std::map<std::string, std::string> redir;
+
+		int listing;
+		std::string default_file;
+
+		std::map<std::string, std::string> cgi;
+		std::string storage_path;
 };
 
 #endif

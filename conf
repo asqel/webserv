@@ -1,20 +1,28 @@
 
-ip:
-	port: 42432567890
+server:
+	host: localhost
+	port: 8000
+	
 	error:
-		404: /path
-		403: /
+		404: /errors/404.html
+		403: /errors/403.html
+	
 	max_body_size: 1096
-	methods:
+
+	allowed_methods:
 		GET
 		POST
+
+	root: "path_to_server/"
 	redir:
-		/a/b: /c/d
-	listing: TrUe
-	default: "/aaaaaaaaa"
+		"/a/b": "/c/d"
+
+	listing: True
+	
+	default_file: "/default.html"
+	
 	cgi:
 		.py: "/bin/python3"
 		.php: "/bin/php"
-	
-ip2:
-	port: 746789780
+
+	storage: "/downloads"

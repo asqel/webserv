@@ -4,6 +4,7 @@
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include <sys/poll.h>
+#include "conf.hpp"
 
 int main() {
 	int fd = socket(AF_INET, SOCK_STREAM, 0);
