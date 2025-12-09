@@ -6,7 +6,7 @@ OBJ := $(addprefix obj/, $(OBJ))
 CC = c++
 LD = c++
 
-CFLAGS = -Wall -Wextra -Werror -std=c++98 -g
+CFLAGS = -Wall -Wextra -Werror -std=c++98 -Iinclude/ -g
 
 NAME = webserv
 
