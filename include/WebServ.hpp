@@ -12,12 +12,11 @@
 #include <vector>
 #include <string>
 #include <fstream>
+#include <cstring>
 
 class Client {
-	private:
-		int fd;
-
 	public:
+		int fd;
 		std::string data;
 };
 
@@ -36,11 +35,6 @@ class Route {
 };
 
 class Interface {
-	private:
-		int server_fd;
-		std::vector<Client> clients;
-		std::vector<int> incomming_fds;
-	
 	public:
 		std::string host;
 		int port;
@@ -50,17 +44,32 @@ class Interface {
 		int max_body_size;
 
 		std::map<std::string, Route> routes;
+
+		std::vector<Client> clients;
+		std::vector<int> incomming_fds;
+
+		~Interface();
+	
 };
+
+typedef struct {
+	int a;
+	int b;
+} int_pair_t;
 
 class WebServ {
 	private:
 		struct pollfd *fds;
 		int fds_len;
 	public:
+		std::vector<int_pair_t> fd_ports;
 		std::vector<Interface> interfaces;
 		void add_interface(Interface conf);
 		void remove_interface(int i);
 		
+		void end();
+		void start();
+		void open_port(int port) throw(std::runtime_error);
 };
 
 int parser(void);
