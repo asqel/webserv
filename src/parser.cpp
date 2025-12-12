@@ -157,7 +157,7 @@ Route get_route_val(std::ifstream &fileIn) {
 }
 
 int parser(void) {
-	Interface config;
+	Interface config = Interface();
 	std::ifstream fileIn;
 	fileIn.open("conf");
 	std::string str;

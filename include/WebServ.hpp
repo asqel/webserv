@@ -12,13 +12,15 @@
 #include <vector>
 #include <string>
 #include <fstream>
+#include <cstring>
 
 class Client {
-	private:
-		int fd;
-
+	int fd;
 	public:
 		std::string data;
+		Client();
+		~Client();
+		void set_fd(int fd);
 };
 
 class Route {
@@ -36,11 +38,6 @@ class Route {
 };
 
 class Interface {
-	private:
-		int server_fd;
-		std::vector<Client> clients;
-		std::vector<int> incomming_fds;
-	
 	public:
 		std::string host;
 		int port;
@@ -52,14 +49,57 @@ class Interface {
 		std::map<std::string, Route> routes;
 };
 
+class Port {
+	public:
+		int fd;
+		int port;
+		~Port();
+		Port();
+		void set(int fd, int port);
+};
+
+class FdInfo {
+	private:
+		int will_close;
+		std::string to_read;
+		std::string to_write;
+	public:
+		int fd;
+		FdInfo();
+		~FdInfo();
+		void set_fd(int fd);
+		void write(std::string data);
+		void close();
+
+		void tick(int can_read, int can_write);
+};
+
 class WebServ {
 	private:
 		struct pollfd *fds;
-		int fds_len;
+		size_t fds_len;
+		std::vector<Port> ports;
+		std::vector<Client> clients;
+		std::vector<FdInfo> fd_infos;
 	public:
+		int end;
 		std::vector<Interface> interfaces;
+		typedef std::runtime_error Error;
 		void add_interface(Interface conf);
 		void remove_interface(int i);
+		void open_port(int port) throw(WebServ::Error);
+		void add_client(int fd);
+		void start() throw(WebServ::Error);
+		void loop();
+		class ForkError: public std::exception {
+			public:
+				virtual const char *what() const throw();
+		};
+		FdInfo *get_fd(int fd);
+		void	add_fd(int fd);
+
+		void handle_connect(int idx);
+
 		
 };
 
