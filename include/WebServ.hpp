@@ -15,8 +15,8 @@
 #include <cstring>
 
 class Client {
-	int fd;
 	public:
+		int fd;
 		std::string data;
 		Client();
 		~Client();
@@ -69,7 +69,9 @@ class FdInfo {
 		~FdInfo();
 		void set_fd(int fd);
 		void write(std::string data);
+		std::string read();
 		void close();
+		bool is_closed();
 
 		void tick(int can_read, int can_write);
 };

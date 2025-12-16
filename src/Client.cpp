@@ -6,7 +6,7 @@ Client::Client() {
 }
 
 Client::~Client() {
-	FdInfo *fd_info = srv->get_fd(this->fd);
+	FdInfo *fd_info = srv.get_fd(this->fd);
 	if (!fd_info)
 		return ;
 	fd_info->close();

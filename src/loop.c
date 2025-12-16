@@ -10,7 +10,7 @@ void WebServ::reset_fds() {
 		size_t end = 0;
 		for (size_t i = 0; i < this->ports.size(); i++)
 			this->fds[end++].fd = this->ports[i].fd;
-		for (size_t i = 0; i < this->clients.size(); i++)
+		for (size_t i = 0; i < this->fd_infos.size(); i++)
 			this->fds[end++].fd = this->fd_infos[i].fd;
 		this->fds_len = count;
 	}
@@ -38,5 +38,12 @@ void WebServ::loop() {
 			else
 				this->fd_infos[i - this->ports.size()].tick(can_read, can_write);
 		}
+		for (size_t i = 0; i < this->fd_infos.size(); i++) {
+			if (this->fd_infos[i].is_closed()) {
+				thiis->fd_infos.erase(this->fd_infos.fd_infos.begin() + i);
+				i--;
+			}
+		}
+			
 	}
 }

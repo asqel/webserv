@@ -55,8 +55,8 @@ FdInfo *WebServ::get_fd(int fd) {
 	if (fd < 0)
 		return NULL;
 	for (size_t i = 0; i < this->fd_infos.size(); i++) {
-		if (this->fd_infos[i].fd == fd);
-			return &this->fd_infos[i].fd;
+		if (this->fd_infos[i].fd == fd)
+			return &this->fd_infos[i];
 	}
 	return NULL;
 }
