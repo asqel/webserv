@@ -29,7 +29,7 @@ void WebServ::loop() {
 		if (ret <= 0)
 			break;
 		size_t current_client = 0;
-		for (int i = 0; i < this->fds_len && ret; i++) {
+		for (size_t i = 0; i < this->fds_len && ret; i++) {
 			if (this->fds[i].revents == 0)
 				continue;
 			ret--;

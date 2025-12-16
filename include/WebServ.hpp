@@ -68,6 +68,7 @@ class WebServ {
 		int end;
 		std::vector<Interface> interfaces;
 		typedef std::runtime_error Error;
+		void reset_fds();
 		void add_interface(Interface conf);
 		void remove_interface(int i);
 		void open_port(int port) throw(WebServ::Error);
@@ -75,6 +76,7 @@ class WebServ {
 		void start() throw(WebServ::Error);
 		void loop();
 		void handle_connect(int idx);
+		void handle_client(int can_read, int can_write);
 
 		class ForkError: public std::exception {
 			public:
