@@ -38,6 +38,7 @@ void WebServ::open_port(int port) throw(WebServ::Error) {
 }
 
 void WebServ::start() throw(WebServ::Error) {
+	this->fds = NULL;
 	for (size_t i = 0; i < this->interfaces.size(); i++)
 		this->open_port(this->interfaces[i].port);
 }
@@ -49,19 +50,4 @@ void WebServ::add_client(int fd) {
 
 const char *WebServ::ForkError::what() const throw() {
     return "";
-}
-
-FdInfo *WebServ::get_fd(int fd) {
-	if (fd < 0)
-		return NULL;
-	for (size_t i = 0; i < this->fd_infos.size(); i++) {
-		if (this->fd_infos[i].fd == fd)
-			return &this->fd_infos[i];
-	}
-	return NULL;
-}
-
-void WebServ::add_fd(int fd) {
-	this->fd_infos.push_back(FdInfo());
-	this->fd_infos.back().set_fd(fd);
 }

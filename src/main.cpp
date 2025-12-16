@@ -5,8 +5,7 @@ WebServ srv;
 int main() {
 	parser();
 	srv.start();
-	while (1)
-	;
+	srv.loop();
 	//int fd = socket(AF_INET, SOCK_STREAM, 0);
 	//struct pollfd fds[1000];
 	//int fds_len  = 0;

@@ -58,31 +58,12 @@ class Port {
 		void set(int fd, int port);
 };
 
-class FdInfo {
-	private:
-		int will_close;
-		std::string to_read;
-		std::string to_write;
-	public:
-		int fd;
-		FdInfo();
-		~FdInfo();
-		void set_fd(int fd);
-		void write(std::string data);
-		std::string read();
-		void close();
-		bool is_closed();
-
-		void tick(int can_read, int can_write);
-};
-
 class WebServ {
 	private:
 		struct pollfd *fds;
 		size_t fds_len;
 		std::vector<Port> ports;
 		std::vector<Client> clients;
-		std::vector<FdInfo> fd_infos;
 	public:
 		int end;
 		std::vector<Interface> interfaces;
@@ -93,14 +74,12 @@ class WebServ {
 		void add_client(int fd);
 		void start() throw(WebServ::Error);
 		void loop();
+		void handle_connect(int idx);
+
 		class ForkError: public std::exception {
 			public:
 				virtual const char *what() const throw();
 		};
-		FdInfo *get_fd(int fd);
-		void	add_fd(int fd);
-
-		void handle_connect(int idx);
 
 		
 };
