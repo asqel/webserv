@@ -18,10 +18,13 @@ class Client {
 	public:
 		int fd;
 		std::string data;
-		std::strinig to_send;
+		std::string to_send;
+		std::string error_fatal;
+		int need_close;
 		Client();
 		~Client();
 		void set_fd(int fd);
+		void close_fd();
 };
 
 class Route {
@@ -77,7 +80,8 @@ class WebServ {
 		void start() throw(WebServ::Error);
 		void loop();
 		void handle_connect(int idx);
-		void handle_client(int can_read, int can_write);
+		void handle_client(Client *clt, int can_read, int can_write);
+		void srv_update_client(int idx);
 
 		class ForkError: public std::exception {
 			public:

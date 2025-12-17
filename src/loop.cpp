@@ -15,17 +15,23 @@ void WebServ::reset_fds() {
 		this->fds_len = end;
 	}
 	for (size_t i = 0; i < this->fds_len; i++) {
-		this->fds[i].events = POLLIN | POLLOUT;
+		if (this->fds[i].fd > 0)
+			this->fds[i].events = POLLIN | POLLOUT;
 		this->fds[i].revents = 0;
 	}
 
 }
 
 void WebServ::loop() {
+	int AA = 0;
 	while (!this->end) {
+		if (this->fds) {
+			delete[] this->fds;
+			this->fds = NULL;
+		}
 		this->reset_fds();
 		int ret = poll(this->fds, this->fds_len, -1);
-		std::cout << "poll " << ret << std::endl;
+		std::cout << "loop ----------------------------------" << AA++ << std::endl;
 		if (ret <= 0)
 			break;
 		size_t current_client = 0;
@@ -38,16 +44,22 @@ void WebServ::loop() {
 			if (i < this->ports.size())
 				this->handle_connect(i);
 			else {
-				this->handle_client(can_read, can_write);
+				this->handle_client(&this->clients[current_client], can_read, can_write);
 				current_client++;
 			}
 		}
 		for (size_t i = 0; i < this->clients.size(); i++) {
 			Client *clt = &this->clients[i];
+			if (clt->fd != -1)
+				srv_update_client(i);
+			if (!clt->error_fatal.length() && clt->need_close) {
+				clt->close_fd();
+				clt->data = "";
+			}
 			if (clt->fd == -1 && clt->data == "") {
-				std::cout << "Removing client (fd " << clt->fd << ")" << std::endl;
 				this->clients.erase(this->clients.begin() + i);
 				i--;
+				continue;
 			}
 		}
 	}
