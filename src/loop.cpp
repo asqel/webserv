@@ -45,6 +45,7 @@ void WebServ::loop() {
 		for (size_t i = 0; i < this->clients.size(); i++) {
 			Client *clt = &this->clients[i];
 			if (clt->fd == -1 && clt->data == "") {
+				std::cout << "Removing client (fd " << clt->fd << ")" << std::endl;
 				this->clients.erase(this->clients.begin() + i);
 				i--;
 			}

@@ -18,6 +18,7 @@ class Client {
 	public:
 		int fd;
 		std::string data;
+		std::strinig to_send;
 		Client();
 		~Client();
 		void set_fd(int fd);
