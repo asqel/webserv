@@ -3,10 +3,14 @@
 WebServ srv;
 
 int main() {
-	parser();
-	srv.start();
-	while (1)
-	;
+	std::string str = 	"GET /contact HTTP/1.1\r\n\r\n";
+	Request request = http_parser(str);
+	std::cout << request.version << std::endl;
+	std::cout << request.args["User-Agent"] << std::endl;
+	//parser();
+	//srv.start();
+	//while (1)
+	//;
 	//int fd = socket(AF_INET, SOCK_STREAM, 0);
 	//struct pollfd fds[1000];
 	//int fds_len  = 0;
