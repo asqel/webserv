@@ -1,7 +1,7 @@
 #include "WebServ.hpp"
 
 void WebServ::srv_update_client(int idx) {
-	Client *clt = &this->clients[idx];
+	Client *clt = this->clients[idx];
 	if (clt->data.length()) {
 		std::cout << "AAAA" << std::endl;
 		clt->data = "";

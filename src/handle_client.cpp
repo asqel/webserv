@@ -9,7 +9,7 @@ void WebServ::handle_client(Client *clt, int can_read, int can_write) {
 		char buffer[4096 + 1];
 		int ret = read(clt->fd, buffer, 4096);
 		if (ret <= 0)
-			clt->close_fd();
+			clt->need_close = 1;
 		else {
 			buffer[ret] = '\0';
 			std::cout << "Client (fd " << clt->fd << "): " << buffer << std::endl;
@@ -23,7 +23,7 @@ void WebServ::handle_client(Client *clt, int can_read, int can_write) {
 				len = clt->error_fatal.length();
 			int ret = send(clt->fd, clt->error_fatal.c_str(), len, MSG_NOSIGNAL);
 			if (ret < 0) {
-				clt->close_fd();
+				clt->need_close = 1; 
 				clt->data = "";
 				clt->error_fatal = "";
 			}
@@ -37,7 +37,7 @@ void WebServ::handle_client(Client *clt, int can_read, int can_write) {
 				len  = clt->to_send.length();
 			int ret = send(clt->fd, clt->to_send.c_str(), len, MSG_NOSIGNAL); 
 			if (ret < 0)
-				clt->close_fd();
+				clt->need_close = 1;
 			else
 				clt->to_send = clt->to_send.substr(ret);
 		}

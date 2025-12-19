@@ -67,7 +67,7 @@ class WebServ {
 		struct pollfd *fds;
 		size_t fds_len;
 		std::vector<Port> ports;
-		std::vector<Client> clients;
+		std::vector<Client *> clients;
 	public:
 		int end;
 		std::vector<Interface> interfaces;
@@ -82,6 +82,7 @@ class WebServ {
 		void handle_connect(int idx);
 		void handle_client(Client *clt, int can_read, int can_write);
 		void srv_update_client(int idx);
+		~WebServ();
 
 		class ForkError: public std::exception {
 			public:

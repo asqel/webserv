@@ -6,13 +6,16 @@ Client::Client() {
 	this->to_send = "";
 	this->error_fatal = "";
 	this->need_close = 0;
+	std::cout << "lE CONSTRICOTR" << std::endl;
 }
 
 Client::~Client() {
+	std::cout << "DESTRUCTOR" << std::endl;
 	this->close_fd();
 }
 
 void Client::set_fd(int fd) {
+	std::cout << "set_fd" << std::endl;
 	this->fd = fd;
 }
 

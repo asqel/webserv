@@ -44,10 +44,20 @@ void WebServ::start() throw(WebServ::Error) {
 }
 
 void WebServ::add_client(int fd) {
-	this->clients.push_back(Client());
-	this->clients.back().set_fd(fd);
+	Client *clt = new Client();
+	std::cout << "pushing" << std::endl;
+	this->clients.push_back(clt);
+	std::cout << "setting" << std::endl;
+	this->clients.back()->set_fd(fd);
+	std::cout << "setting end" << std::endl;
 }
 
 const char *WebServ::ForkError::what() const throw() {
     return "";
+}
+
+WebServ::~WebServ() {
+	for (size_t i = 0; i < this->clients.size(); i++) {
+		delete this->clients[i];
+	}
 }
