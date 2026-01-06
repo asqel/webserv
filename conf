@@ -1,7 +1,7 @@
 
 server:
 	host: localhost
-	port: 8001
+	port: 8000
 
 	errors:
 		404: /errors/404.html,

@@ -6,7 +6,7 @@ void WebServ::srv_update_client(int idx) {
 		std::cout << "AAAA" << std::endl;
 		clt->data = "";
 		clt->error_fatal = \
-		"HTTP/1.1 404 pas trouve\r\n" \
+		"HTTP/1.1 200 pas trouve\r\n" \
 		"Server: webserv\r\n" \
 		"Content-Length: 6\r\n" \
 		"Content-Type: text/html\r\n" \

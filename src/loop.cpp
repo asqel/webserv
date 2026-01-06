@@ -37,12 +37,6 @@ void WebServ::reset_fds() {
 			continue;
 		}
 	}
-	std::cout << "POOOOLLL ####################" << std::endl;
-	for (size_t i = 0; i < this->fds_len; i++) {
-		std::cout << this->fds[i].fd << std::endl;
-	}
-	std::cout << "#####################" << std::endl;
-
 }
 
 void WebServ::loop() {
