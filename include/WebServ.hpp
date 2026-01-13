@@ -13,6 +13,16 @@
 #include <string>
 #include <fstream>
 #include <cstring>
+#define NOFOUND (std::string::npos)
+
+class Request {
+	public:
+		int error; // 1 if has error
+		std::string method;
+		std::string path;
+		std::string version;
+		std::map<std::string, std::string> args;
+};
 
 class Client {
 	public:
@@ -91,6 +101,13 @@ class WebServ {
 
 		
 };
+
+//parser_utils
+std::string get_str_val(std::string str);
+int get_int_val(std::string str);
+std::string get_key(std::string str);
+
+Request http_parser(std::string request);
 
 int parser(void);
 extern WebServ srv;
