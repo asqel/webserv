@@ -19,11 +19,12 @@ static std::string remove_spaces(std::string str) {
 	std::string ret;
 	size_t i = 0;
 	size_t y = 0;
+	
 	while (str[i] == ' ' || (str[i] >= '\t' && str[i] <= '\r'))
 		i++;
-	y = i;
-	while (!(str[y] == ' ' || (str[y] >= '\t' && str[y] <= '\r')) && y < str.length())
-		y++;
+	y = str.length();
+	while ((str[y] == ' ' || (str[y] >= '\t' && str[y] <= '\r')) && y > i)
+		y--;
 	ret = str.substr(i, y);
 	return (ret);
 }

@@ -14,10 +14,12 @@
 #include <fstream>
 #include <cstring>
 #define NOFOUND (std::string::npos)
+#define MAX_LINE_LEN 4096
+
 
 class Request {
 	public:
-		int error; // 1 if has error
+		int error; // 0: not finish, 1: good, 2: bad
 		std::string method;
 		std::string path;
 		std::string version;
@@ -27,14 +29,18 @@ class Request {
 class Client {
 	public:
 		int fd;
-		std::string data;
 		std::string to_send;
 		std::string error_fatal;
 		int need_close;
+		std::string data;
+
+		Request req;
+
 		Client();
 		~Client();
 		void set_fd(int fd);
 		void close_fd();
+		void rm_data(int pos, int len);
 };
 
 class Route {
@@ -107,7 +113,7 @@ std::string get_str_val(std::string str);
 int get_int_val(std::string str);
 std::string get_key(std::string str);
 
-Request http_parser(std::string request);
+void http_parser(Client *client);
 
 int parser(void);
 extern WebServ srv;
