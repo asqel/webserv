@@ -6,9 +6,6 @@ Port::Port() {
 }
 
 Port::~Port() {
-	if (this->fd >= 0)
-		close(this->fd);
-	this->fd = -1;
 }
 
 void Port::set(int fd, int port) {

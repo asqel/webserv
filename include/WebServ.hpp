@@ -16,6 +16,7 @@
 
 class Client {
 	public:
+		int port;
 		int fd;
 		std::string data;
 		std::string to_send;
@@ -76,13 +77,15 @@ class WebServ {
 		void add_interface(Interface conf);
 		void remove_interface(int i);
 		void open_port(int port) throw(WebServ::Error);
-		void add_client(int fd);
+		void add_client(int fd, int port);
 		void start() throw(WebServ::Error);
 		void loop();
 		void handle_connect(int idx);
 		void handle_client(Client *clt, int can_read, int can_write);
 		void srv_update_client(int idx);
 		~WebServ();
+
+		void print_clients();
 
 		class ForkError: public std::exception {
 			public:
