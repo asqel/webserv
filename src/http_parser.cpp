@@ -135,9 +135,9 @@ void http_parser(Client *client) {
 
 	size_t len = 0;
 	while (1) {
-		len = client->data.find("/r/n");
 		if (client->req.error == 1)
 			return;
+		len = client->data.find("\r\n");
 		if (len == NOFOUND) {
 			client->req.error = 0;
 			if (client->data.length() > MAX_LINE_LEN)
@@ -145,7 +145,7 @@ void http_parser(Client *client) {
 			break;
 		}
 		std::string line = client->data.substr(0, len);
-		client->data = client->data.substr(len + 4);
+		client->data = client->data.substr(len + 2);
 		if (!has_first_line(client->req)){
 			if(!parse_fisrt_line(line, client->req)) {
 				client->req.error = 2;
