@@ -58,35 +58,6 @@ std::string remove_spaces(std::string str) {
 	return (ret);
 }
 
-std::string get_key(std::string str){
-	std::string ret;
-	size_t sep;
-	sep = str.find(':');
-	if (sep == std::string::npos)
-		return (ret);
-	ret = remove_spaces(str.substr(0, sep));
-	return (ret);
-}
-
-int get_int_val(std::string str){
-	int ret = -1;
-	size_t sep;
-	sep = str.find(':');
-	if (sep == std::string::npos)
-		return (ret);
-	ret = ft_atoi(remove_spaces(str.substr(sep + 1)));
-	return (ret);
-}
-
-std::string get_str_val(std::string str){
-	std::string ret;
-	size_t sep;
-	sep = str.find(':');
-	if (sep == std::string::npos)
-		return (ret);
-	ret = remove_spaces(str.substr(sep + 1));
-	return (ret);
-}
 
 std::vector<std::string> get_vec_val(std::ifstream &fileIn, int tab) {
 	std::string str;

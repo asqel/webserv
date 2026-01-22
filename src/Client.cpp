@@ -6,6 +6,7 @@ Client::Client() {
 	this->to_send = "";
 	this->error_fatal = "";
 	this->need_close = 0;
+	this->req.error = 0;	
 }
 
 Client::~Client() {
