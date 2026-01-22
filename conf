@@ -1,7 +1,36 @@
 
 server:
 	host: localhost
-	port: 8000
+	port: 8002
+
+	errors:
+		404: /errors/404.html,
+		403: /errors/403.html
+
+	max_body_size: 1096
+
+	route: /a/
+		allowed_methods:
+			GET,
+			POST
+
+		redir:
+			"/a/b": "/c/d"
+
+		root: "path_to_server/
+		listing: 1
+
+		default_file: "/default.html"
+
+		cgi:
+			.py: "/bin/python3"
+			.php: "/bin/php"
+
+		storage: "/downloads"
+
+server:
+	host: localhost
+	port: 8001
 
 	errors:
 		404: /errors/404.html,

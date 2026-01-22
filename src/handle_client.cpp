@@ -12,7 +12,6 @@ void WebServ::handle_client(Client *clt, int can_read, int can_write) {
 			clt->need_close = 1;
 		else {
 			buffer[ret] = '\0';
-			std::cout << "Client (fd " << clt->fd << "): " << buffer << std::endl;
 			clt->data += buffer;
 		}	
 	}

@@ -136,7 +136,6 @@ int parser(void) {
 		if(str == "server:") {
 			srv.add_interface(config);
 			config = Interface();
-			std::cout << "reseting on line: " << str << std::endl;
 		}
 		else if (is_whitespaces(str)){
 			continue;
@@ -161,12 +160,5 @@ int parser(void) {
 	}
 	srv.add_interface(config);
 	srv.remove_interface(0);
-	std::cout << "\nname: " << srv.interfaces[0].host;
-	std::cout << "\nname: " << config.host;
-	std::cout << "\nport: " << config.port;
-	std::cout << "\nmax: " << config.max_body_size;
-	std::cout << "\nroute: " << config.routes["/a/"].default_file;
-	std::cout << "\nroute: " << srv.interfaces[0].routes["/a/"].default_file;
-	std::cout << std::endl;
 	return (1);
 }
