@@ -1,4 +1,5 @@
 #include "WebServ.hpp"
+#include <iomanip>
 #include <cstdlib>
 
 void WebServ::reset_fds() {
@@ -32,15 +33,25 @@ void WebServ::reset_fds() {
 			current_client++;
 		}
 		if (this->fds[i].fd < 0) {
-			this->fds[i].fd = this->ports[0].fd;
-			this->fds[i].events = POLLOUT;
+			this->fds[i].fd = 2;
+			this->fds[i].events = POLLIN;
 			continue;
 		}
 	}
 }
 
+void WebServ::print_clients() {
+	for (size_t i = 0; i < this->clients.size(); i++) {
+		std::cout << "Client " << this->clients[i]->fd;
+		std::cout << ":" << this->clients[i]->port;
+		std::cout << " data len " << this->clients[i]->data.length();
+		std::cout << std::endl;
+	}
+	std::cout << std::endl;
+	std::cout << std::endl;
+}
+
 void WebServ::loop() {
-	int AA = 0;
 	while (!this->end) {
 		if (this->fds) {
 			delete[] this->fds;
@@ -48,7 +59,6 @@ void WebServ::loop() {
 		}
 		this->reset_fds();
 		int ret = poll(this->fds, this->fds_len, -1);
-		std::cout << "loop ----------------------------------" << AA++ << std::endl;
 		if (ret <= 0)
 			break;
 		size_t current_client = 0;
@@ -58,13 +68,6 @@ void WebServ::loop() {
 			ret--;
 			int can_read = this->fds[i].revents & POLLIN;
 			int can_write = this->fds[i].revents & POLLOUT;
-			uint32_t state = this->fds[i].revents;
-			std::cout << POLLIN << " "  << POLLOUT << std::endl;
-			std::cout << "fd " << this->fds[i].fd << " ";
-			for (int k = 31; k >= 0; k--) {
-				std::cout << ((state >> k) & 1);
-			}
-			std::cout << std::endl;
 			if (i < this->ports.size())
 				this->handle_connect(i);
 			else {
@@ -72,7 +75,7 @@ void WebServ::loop() {
 				current_client++;
 			}
 		}
-		std::cout << "avant meurtre " << this->clients.size() << std::endl;
+		print_clients();
 		for (size_t i = 0; i < this->clients.size(); i++) {
 			Client *clt = this->clients[i];
 			if (clt->fd != -1)
@@ -88,6 +91,5 @@ void WebServ::loop() {
 				continue;
 			}
 		}
-		std::cout << "apres meurtre " << this->clients.size() << std::endl;
 	}
 }

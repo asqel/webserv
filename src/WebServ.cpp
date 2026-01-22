@@ -42,13 +42,11 @@ void WebServ::start() throw(WebServ::Error) {
 		this->open_port(this->interfaces[i].port);
 }
 
-void WebServ::add_client(int fd) {
+void WebServ::add_client(int fd, int port) {
 	Client *clt = new Client();
-	std::cout << "pushing" << std::endl;
 	this->clients.push_back(clt);
-	std::cout << "setting" << std::endl;
 	this->clients.back()->set_fd(fd);
-	std::cout << "setting end" << std::endl;
+	this->clients.back()->port = port;
 }
 
 const char *WebServ::ForkError::what() const throw() {
@@ -56,7 +54,9 @@ const char *WebServ::ForkError::what() const throw() {
 }
 
 WebServ::~WebServ() {
-	for (size_t i = 0; i < this->clients.size(); i++) {
+	for (size_t i = 0; i < this->ports.size(); i++)
+		close(this->ports[i].fd);
+	
+	for (size_t i = 0; i < this->clients.size(); i++)
 		delete this->clients[i];
-	}
 }
