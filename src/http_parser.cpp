@@ -131,33 +131,46 @@ int parse_other_line(std::string str, Request &request) {
 	return (1);
 }
 
+void error_client(Client *client) {
+	client->data = "";
+	client->error_fatal = \
+	"HTTP/1.1 400 requeest error\r\n" \
+	"Server: webserv\r\n" \
+	"Content-Length: 0\r\n" \
+	"Content-Type: text/html\r\n" \
+	"Cache-Control: no-store\r\n" \
+	"\r\n";
+	client->need_close = 1;
+}
+
 void http_parser(Client *client) {
 
 	size_t len = 0;
 	while (1) {
-		if (client->req.error == 1)
+		if (client->req.done == 1)
 			return;
 		len = client->data.find("\r\n");
 		if (len == NOFOUND) {
-			client->req.error = 0;
-			if (client->data.length() > MAX_LINE_LEN)
-				client->req.error = 2;
-			break;
+			client->req.done = 0;
+			if (client->data.length() > MAX_LINE_LEN) {
+				error_client(client);
+			}
+			return;
 		}
 		std::string line = client->data.substr(0, len);
 		client->data = client->data.substr(len + 2);
 		if (!has_first_line(client->req)){
 			if(!parse_fisrt_line(line, client->req)) {
-				client->req.error = 2;
+				error_client(client);
 				return ;
 			}
 		}
 		else {
 			int ret = parse_other_line(line, client->req);
 			if (ret == 2)
-				client->req.error = 1;
+				client->req.done = 1;
 			if(ret == 0) {
-				client->req.error = 2;
+				error_client(client);
 				return ;
 			}
 		}

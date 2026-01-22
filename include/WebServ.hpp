@@ -19,7 +19,7 @@
 
 class Request {
 	public:
-		int error; // 0: not finish, 1: good, 2: bad
+		int done; // 0: not finish, 1 finish
 		std::string method;
 		std::string path;
 		std::string version;
@@ -98,6 +98,7 @@ class WebServ {
 		void handle_connect(int idx);
 		void handle_client(Client *clt, int can_read, int can_write);
 		void srv_update_client(int idx);
+		void exec_client(Client *clt);
 		~WebServ();
 
 		class ForkError: public std::exception {

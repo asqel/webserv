@@ -1,4 +1,3 @@
-#include "WebServ.hpp"
 
 void WebServ::add_interface(Interface conf) {
 	this->interfaces.push_back(conf);
