@@ -36,8 +36,8 @@ int check_version(std::string ver) {
 	if (ver[0] == 'H' && ver[1] == 'T'
 		&& ver[2] == 'T' && ver[3] == 'P' && ver[4] == '/'
 		&& isDigit(ver[5]) && ver[6] == '.' && isDigit(ver[7]))
-		return (0);
-	return (1);
+		return (1);
+	return (0);
 }
 
 int check_path(std::string path) {
@@ -49,12 +49,12 @@ int check_path(std::string path) {
 
 int check_method(std::string met) {
 	if (met == "GET")
-		return (0);
+		return (1);
 	if (met == "POST")
-		return (0);
+		return (1);
 	if (met == "DELETE")
-		return (0);
-	return (1);
+		return (1);
+	return (0);
 }
 
 int has_first_line(Request &req) {
@@ -70,11 +70,11 @@ int has_first_line(Request &req) {
 int check_first_line(Request &req) {
 	if (!has_first_line(req))
 		return (0);
-	if (!check_version(req.version))
-		return (0);
 	if (!check_method(req.method))
 		return (0);
 	if (!check_path(req.path))
+		return (0);
+	if (!check_version(req.version))
 		return (0);
 	return (1);
 }
@@ -114,7 +114,7 @@ static int parse_fisrt_line(std::string str, Request &request) {
 	while (i < str.length())
 		i++;
 	request.version = str.substr(start, i - start);
-	return (!check_first_line(request));
+	return (check_first_line(request));
 }
 
 int parse_other_line(std::string str, Request &request) {
@@ -132,6 +132,7 @@ int parse_other_line(std::string str, Request &request) {
 }
 
 void error_client(Client *client) {
+	std::cout << "error" << std::endl;
 	client->data = "";
 	client->error_fatal = \
 	"HTTP/1.1 400 requeest error\r\n" \

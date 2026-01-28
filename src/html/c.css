@@ -1,0 +1,24 @@
+*{
+	text-align: center;
+	font-family: 'Comic Sans MS';
+}
+
+.time {
+	white-space: nowrap;
+	font-size:200%;
+}
+
+.sep {
+	font-size:400%;
+}
+
+.images {
+	font-size:200%;
+}
+
+table {
+  margin-left: auto;
+  margin-right: auto;
+  /* Optional: Set a width if needed */
+  width: 80%;
+}
