@@ -23,3 +23,11 @@ void Client::close_fd() {
 	}
 	this->fd = -1;
 }
+
+void Client::set_to_read(size_t b) {
+	this->bytes_to_read = b;
+}
+
+void Client::unset_to_read() {
+	this->bytes_to_read = -1;
+}

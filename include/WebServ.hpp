@@ -26,6 +26,20 @@ class Request {
 		std::map<std::string, std::string> args;
 };
 
+enum {
+	TASK_NONE,
+	TASK_IFSTREAM,
+	TASK_PIPE
+};
+
+class Task {
+	public:
+		int task;
+		int pipe[2];
+		ofstream file;
+
+};
+
 class Client {
 	public:
 		int port;
@@ -37,11 +51,15 @@ class Client {
 
 		Request req;
 
+		size_t bytes_to_read;
+
 		Client();
 		~Client();
 		void set_fd(int fd);
 		void close_fd();
 		void rm_data(int pos, int len);
+		void set_to_read(size_t b);
+		void unset_to_read();
 };
 
 class Route {
@@ -83,8 +101,9 @@ class WebServ {
 	private:
 		struct pollfd *fds;
 		size_t fds_len;
-		std::vector<Port> ports;
+		std::vector<Port *> ports;
 		std::vector<Client *> clients;
+
 	public:
 		int end;
 		std::vector<Interface> interfaces;
@@ -100,6 +119,7 @@ class WebServ {
 		void handle_client(Client *clt, int can_read, int can_write);
 		void srv_update_client(int idx);
 		void exec_client(Client *clt);
+		Interface *find_interface(int port, std::string host);
 		~WebServ();
 
 		void print_clients();

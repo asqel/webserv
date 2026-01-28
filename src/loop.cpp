@@ -11,7 +11,7 @@ void WebServ::reset_fds() {
 
 		size_t end = 0;
 		for (size_t i = 0; i < this->ports.size(); i++)
-			this->fds[end++].fd = this->ports[i].fd;
+			this->fds[end++].fd = this->ports[i]->fd;
 		for (size_t i = 0; i < this->clients.size(); i++)
 			this->fds[end++].fd = this->clients[i]->fd;
 		this->fds_len = end;
@@ -22,7 +22,7 @@ void WebServ::reset_fds() {
 		this->fds[i].revents = 0;
 		if (i < this->ports.size()) {
 			this->fds[i].events = POLLIN;
-			this->fds[i].fd = this->ports[i].fd;
+			this->fds[i].fd = this->ports[i]->fd;
 		}
 		else {
 			this->fds[i].events = POLLIN;
@@ -33,8 +33,8 @@ void WebServ::reset_fds() {
 			current_client++;
 		}
 		if (this->fds[i].fd < 0) {
-			this->fds[i].fd = 2;
-			this->fds[i].events = POLLIN;
+			this->fds[i].fd = -1;
+			this->fds[i].events = 0;
 			continue;
 		}
 	}

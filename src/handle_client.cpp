@@ -1,18 +1,23 @@
 #include "WebServ.hpp"
 #include <stdlib.h>
 
+int has_enough(Client *clt) {
+	if (clt->bytes_to_read >= 0)
+		return clt->data.length() >= clt->bytes_to_read;
+	return clt->data.length() >= MAX_LINE_LEN * 2;
+}
+
 
 void WebServ::handle_client(Client *clt, int can_read, int can_write) {
 	if (clt->fd < 0)
 		return ;
-	if (can_read && !clt->need_close) {	
-		char buffer[4096 + 1];
+	if (can_read && !clt->need_close && !has_enough(clt)) {	
+		char buffer[MAX_LINE_LEN];
 		int ret = read(clt->fd, buffer, 4096);
 		if (ret <= 0)
 			clt->need_close = 1;
 		else {
-			buffer[ret] = '\0';
-			clt->data += buffer;
+			clt->data.append(buffer, ret);
 		}	
 	}
 	else if (can_write) {

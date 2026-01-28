@@ -10,7 +10,7 @@ void WebServ::remove_interface(int i) {
 
 void WebServ::open_port(int port) throw(WebServ::Error) {
 	for (size_t i = 0; i < this->ports.size(); i++) {
-		if (this->ports[i].port == port)
+		if (this->ports[i]->port == port)
 			return ;
 	}
 
@@ -33,8 +33,8 @@ void WebServ::open_port(int port) throw(WebServ::Error) {
 	}
 	std::cout << "Listening port " << port;
 	std::cout << " with fd " << fd << std::endl;
-	this->ports.push_back(Port());
-	this->ports.back().set(fd, port);
+	this->ports.push_back(new Port());
+	this->ports.back()->set(fd, port);
 }
 
 void WebServ::start() throw(WebServ::Error) {
@@ -55,8 +55,10 @@ const char *WebServ::ForkError::what() const throw() {
 }
 
 WebServ::~WebServ() {
-	for (size_t i = 0; i < this->ports.size(); i++)
-		close(this->ports[i].fd);
+	for (size_t i = 0; i < this->ports.size(); i++) {
+		close(this->ports[i]->fd);
+		delete this->ports[i];
+	}
 	
 	for (size_t i = 0; i < this->clients.size(); i++)
 		delete this->clients[i];

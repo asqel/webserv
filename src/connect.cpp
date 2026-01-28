@@ -6,6 +6,6 @@ void WebServ::handle_connect(int idx) {
 		std::cerr << "Error accept: " << strerror(errno) << std::endl;
 		return ;
 	}
-	this->add_client(fd, this->ports[idx].port);
+	this->add_client(fd, this->ports[idx]->port);
 	std::cout << "Accepting client (fd " << fd << ")" << std::endl;
 }
