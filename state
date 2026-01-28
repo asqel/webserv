@@ -4,6 +4,7 @@ CLIENT:
     	/						\	
 	READ -> EXEC -> SEND_FILE -> |
 	        ^  \--> SEND_PIPE -> |
+			|  \--> FILE_BODY -> |
 			|  \--> WAIT_BODY ----->|
 			|  \--> THROW_BODY ---->|
 			 \_____________________ /
